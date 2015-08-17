@@ -8,6 +8,8 @@ build:
 	../configure
 	make
 
+There are also QtCreator .pro file in `src`
+
 run:
 	
 	cd src
