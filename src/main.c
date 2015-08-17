@@ -98,7 +98,6 @@ int main(int argc, char **argv)
             for(i = 0; i < input.framesDrop; i++){
                 if(d.unvisitedNum != 0){
                     d = generateStep(d);
-                    flagAction = NOTHING; //пошаговое выполнение
                 }
                 else{
                     flagGeneratorData = 0;
@@ -142,10 +141,6 @@ int main(int argc, char **argv)
             last = input;
             input = getInput(0, GENERATE, last);
             if((last.width != input.width) || (last.height != input.height)){
-                //d = initGeneratorData(input.width, input.height, input.startPoint);
-                //rd = initRenderData(d, input.windowW, input.windowH);
-                //glVertexPointer(2, GL_FLOAT, sizeof(vertex), rd.vertices);
-                //glColorPointer(3, GL_UNSIGNED_BYTE, sizeof(vertexColor), rd.verticesColor);
                 flagGenerated = 0;
                 flagGeneratorData = 0;
                 flagSolverData = 0;
@@ -158,7 +153,6 @@ int main(int argc, char **argv)
             data = malloc(input.windowW * input.windowH * 4 * sizeof(uint8_t));
             glReadBuffer(GL_FRONT);
             glReadPixels(0, 0, input.windowW , input.windowH,  GL_RGBA, GL_UNSIGNED_BYTE, data);
-            save_png_libpng("./labyrinth.png", data, input.windowW, input.windowH);
             flagAction = NOTHING;
 
         }

@@ -24,9 +24,9 @@ void drawGenerateMatrix(mazeMatrix maze, renderData rd){
                                       rd.verticesColor[col].b = 0;
                                       break;
                         case GENVISITED:
-                                      rd.verticesColor[col].r = 255; //randomRange(0, 255);//= 0;
-                                      rd.verticesColor[col].g = 30; //randomRange(0, 255);//= 0;
-                                      rd.verticesColor[col].b = 100; //randomRange(0, 255);//= 0;
+                                      rd.verticesColor[col].r = 220; //randomRange(0, 255);//= 0;
+                                      rd.verticesColor[col].g = 255; //randomRange(0, 255);//= 0;
+                                      rd.verticesColor[col].b = 220; //randomRange(0, 255);//= 0;
                                       break;
                         case GENCELL:
                                                               rd.verticesColor[col].r = 255;
@@ -45,30 +45,18 @@ void drawGenerateMatrix(mazeMatrix maze, renderData rd){
 
 void drawSolveMatrix(mazeMatrix maze, renderData rd){
     int i, j, c, col = 0;
-    static int cr = 255;
-    static int cg = 30;
-    static int cb = 30;
-    static int fr, fg, fb;
-    if(fr != 1){
-        if(cr < 255) cr++;
-        else         fr = 1;
-    }
-    else{
-        if(cr > 100) cr--;
-        else         fr = 0;
-    }
     for(i = 0; i < rd.height; i++){
         for(j = 0; j < rd.width; j++){
             if(maze[i][j] != WALL && maze[i][j] != GENCELL && maze[i][j] != GENVISITED){
                 for(c = 0; c<4; c++){
                     switch (maze[i][j]){
                         case WAY:
-                                      rd.verticesColor[col].r = cr;
-                                      rd.verticesColor[col].g = cg;
-                                      rd.verticesColor[col].b = cb;
+                                      rd.verticesColor[col].r = 255;
+                                      rd.verticesColor[col].g = 30;
+                                      rd.verticesColor[col].b = 30;
                                       break;
-                        case SEEKED:  rd.verticesColor[col].r = 255;
-                                      rd.verticesColor[col].g = 255;
+                        case SEEKED:  rd.verticesColor[col].r = 220;
+                                      rd.verticesColor[col].g = 220;
                                       rd.verticesColor[col].b = 255;
                                       break;
                         case CURRENT:
