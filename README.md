@@ -4,7 +4,7 @@ To build maze generator you need `OpenGL` and `SDL2` installed in your system
 
 build:
 
-	cd build
+	mkdir build && cd build
 	../configure
 	make
 
