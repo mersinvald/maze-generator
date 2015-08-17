@@ -73,7 +73,6 @@ int main(int argc, char **argv)
                 case  SDLK_g:      flagAction = GENERATE;      break;
                 case  SDLK_s:      flagAction = SOLVE;         break;
                 case  SDLK_TAB:    flagAction = STOP;          break;
-                case  SDLK_o:      flagAction = OUTPUT;        break;
                 case  SDLK_ESCAPE: quit = 1;                   break;
                 case  SDLK_UP:     input.framesDrop++;         break;
                 case  SDLK_RIGHT:  input.animationDelay++;

@@ -29,10 +29,10 @@ void drawGenerateMatrix(mazeMatrix maze, renderData rd){
                                       rd.verticesColor[col].b = 220; //randomRange(0, 255);//= 0;
                                       break;
                         case GENCELL:
-                                                              rd.verticesColor[col].r = 255;
-                                                              rd.verticesColor[col].g = 255;
-                                                              rd.verticesColor[col].b = 255;
-                                                              break;
+                                      rd.verticesColor[col].r = 255;
+                                      rd.verticesColor[col].g = 255;
+                                      rd.verticesColor[col].b = 255;
+                                      break;
                     }
                     col++;
                 }
