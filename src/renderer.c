@@ -1,19 +1,8 @@
 #include <renderer.h>
 
-
-void renderMatrix(mazeMatrix maze, renderData rd, int mode){
-    glClear(GL_COLOR_BUFFER_BIT);
-    //printVertices(rd.vertices, rd.vertices_count);
-
-    if(mode == GENERATE)   drawGenerateMatrix(maze, rd);
-    else                   drawSolveMatrix(maze, rd);
-
-    glDrawArrays(GL_QUADS,0, rd.vertices_count);
-    //memset(cArray, 255, sizeof(vertexColor)*rd.width*rd.height*4); //очистка массива цветов точек
-}
-
-void drawGenerateMatrix(mazeMatrix maze, renderData rd){
-    int i, j, c, col = 0;
+void drawGenerateMatrix(MazeMatrix_t maze, RenderData_t rd){
+    uint16_t i, j, c;
+    uint32_t col = 0;
     for(i = 0; i < rd.height; i++){
         for(j = 0; j < rd.width; j++){
             if(maze[i][j] != WALL && maze[i][j] /*!= GENCELL*/){
@@ -43,8 +32,9 @@ void drawGenerateMatrix(mazeMatrix maze, renderData rd){
 }
 
 
-void drawSolveMatrix(mazeMatrix maze, renderData rd){
-    int i, j, c, col = 0;
+void drawSolveMatrix(MazeMatrix_t maze, RenderData_t rd){
+    uint16_t i, j, c;
+    uint32_t col = 0;
     for(i = 0; i < rd.height; i++){
         for(j = 0; j < rd.width; j++){
             if(maze[i][j] != WALL && maze[i][j] != GENCELL && maze[i][j] != GENVISITED){
@@ -78,4 +68,15 @@ void drawSolveMatrix(mazeMatrix maze, renderData rd){
             else col+=4;
         }
     }
+}
+
+void renderMatrix(MazeMatrix_t maze, RenderData_t rd, Action_t mode){
+    glClear(GL_COLOR_BUFFER_BIT);
+    //printVertices(rd.vertices, rd.vertices_count);
+
+    if(mode == GENERATE)   drawGenerateMatrix(maze, rd);
+    else                   drawSolveMatrix(maze, rd);
+
+    glDrawArrays(GL_QUADS,0, rd.vertices_count);
+    //memset(cArray, 255, sizeof(vertexColor)*rd.width*rd.height*4); //очистка массива цветов точек
 }

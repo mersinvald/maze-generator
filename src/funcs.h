@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <types.h>
 
-void printBitmap(mazeMatrix maze, int w, int h);
-void printVertices(vertex* array, int count);
+void printBitmap  (MazeMatrix_t maze, uint16_t w, uint16_t h);
+void printVertices(Vertex_t* array,   uint16_t count);
 
 #endif // FUNCS_H
 

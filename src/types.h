@@ -2,87 +2,81 @@
 #define TYPES_H
 #include <SDL2/SDL_opengl.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-struct cods{
-    unsigned int x;
-    unsigned int y;
+struct cods_s{
+    uint16_t x;
+    uint16_t y;
 };
 
-typedef struct cods cell;
+typedef struct cods_s Cell_t;
 
-enum mazeCell {CELL = 0, GENCELL, GENVISITED, RENDERED, WALL, WAY, CURRENT, LAST, SEEKED, EXIT};
+typedef enum CellTypes { CELL, GENCELL, GENVISITED, RENDERED, WALL, WAY, CURRENT, LAST, SEEKED, EXIT } CellType_t;
+typedef enum Actions   { NOTHING, GENERATE, SOLVE, ALL, STOP, OUTPUT } Action_t;
 
-typedef int*               mazeString;
-typedef int**              mazeMatrix;
+typedef int8_t*  MazeString_t;
+typedef int8_t** MazeMatrix_t;
 
-struct cellString{
-    cell* cells;
-    unsigned int size;
-};
-typedef struct cellString cellString;
+typedef struct CellString_s {
+    Cell_t   *cells;
+    uint32_t  size;
+} CellString_t;
 
-struct Stack{
-    cell c;
-    struct Stack *next;
-};
-typedef struct Stack stack;
+typedef struct Node_s {
+    Cell_t cell;
+    struct Node_s *next;
+} Node_t;
 
-struct mazeData{
-    unsigned int width;
-    unsigned int height;
-    unsigned int unvisitedNum;
-    mazeMatrix   maze;
-    stack*       s;
-    unsigned int stackSize;
-    cell         startPoint;
-    cell         exitPoint;
-    cell         cellNext;
-    int error;
-};
-typedef struct mazeData data;
+typedef struct Stack_s {
+    Node_t*  top;
+    uint32_t size;
+} Stack_t;
 
-struct vertex{
+typedef struct mazeData_s {
+    uint16_t    width;
+    uint16_t    height;
+    uint32_t    unvisitedNum;
+    MazeMatrix_t  maze;
+    Stack_t    *stack;
+    Cell_t      startPoint;
+    Cell_t      exitPoint;
+    Cell_t      cellNext;
+    bool        error;
+} Data_t;
+
+typedef struct Vertex_s {
     GLfloat x,y;
-};
+} Vertex_t;
 
-struct vertexColor{
+typedef struct VertexColor_s {
     GLubyte r,g,b;
-};
+} VertexColor_t;
 
-typedef struct vertex vertex;
-typedef struct vertexColor vertexColor;
-
-struct renderData{
-    unsigned int width;
-    unsigned int height;
+typedef struct RenderData {
+    uint16_t       width;
+    uint16_t       height;
     //opengl data
-    GLfloat x;
-    GLfloat y;
-    GLfloat pSize;
-    vertex *vertices;
-    vertexColor *verticesColor;
-    int vertices_count;
+    GLfloat        x;
+    GLfloat        y;
+    GLfloat        pSize;
+    Vertex_t      *vertices;
+    VertexColor_t *verticesColor;
+    uint32_t       vertices_count;
 
-};
+} RenderData_t;
 
-typedef struct renderData renderData;
-
-enum actions {NOTHING = 0, GENERATE, SOLVE, ALL, STOP, OUTPUT};
-
-struct parms{
-        int width;
-        int height;
-        int windowW;
-        int windowH;
-        int animationDelay;
-        int framesDrop;
-        int fullscreen;
-        cell startPoint;
-        cell exitPoint;
-};
-typedef struct parms parms;
-
-
+typedef struct Parms_s {
+        uint16_t width;
+        uint16_t height;
+        uint16_t windowW;
+        uint16_t windowH;
+        uint16_t animationDelay;
+        uint8_t  framesDrop;
+        bool     fullscreen;
+        Cell_t   startPoint;
+        Cell_t   exitPoint;
+} Parms_t;
 
 #endif // TYPES_H
 

@@ -10,39 +10,15 @@
 #include <stack.h>
 
 
-data generate           (data d);
+bool generate             (Data_t* d);
 
-data generateStep       (data d);
+bool generateStep         (Data_t* d);
 
-mazeMatrix init         (unsigned int width,
-                         unsigned int height);
+MazeMatrix_t init         (uint16_t width, uint16_t height);
 
-mazeMatrix finalize     (unsigned int width,
-                         unsigned int heiggt,
-                         mazeMatrix   maze);
+MazeMatrix_t finalize     (uint16_t width, uint16_t height, MazeMatrix_t maze);
 
-mazeMatrix removeWall   (cell first,
-                         cell second,
-                         mazeMatrix maze);
+uint32_t unvisitedCount(uint16_t width, uint16_t height, MazeMatrix_t maze);
 
-cellString getCells     (unsigned int width,
-                         unsigned int height,
-                         mazeMatrix maze);
-
-cellString getUnvisitedCells
-                        (unsigned int width,
-                         unsigned int height,
-                         mazeMatrix maze);
-
-unsigned int        unvisitedCount
-                        (unsigned int width,
-                         unsigned int height,
-                         mazeMatrix maze);
-
-//steps       addStep      (mazeMatrix *maze,
-//                          unsigned int width,
-//                          unsigned int height,
-//                          cell cellCurrent,
-//                          steps s);
 #endif // GENERATOR_H
 

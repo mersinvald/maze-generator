@@ -13,9 +13,9 @@
 #include <SDL2/SDL_ttf.h>
 
 void InitGL();
-int SetViewport(int width, int height);
-void renderMatrix(mazeMatrix maze, renderData rd, int mode);
-void drawSolveMatrix(mazeMatrix maze, renderData rd);
-void drawGenerateMatrix(mazeMatrix maze, renderData rd);
-int handleTextInput(SDL_Event e);
+
+bool setViewport(uint16_t width, uint16_t height);
+
+void renderMatrix(MazeMatrix_t maze, RenderData_t rd, Action_t mode);
+
 #endif // RENDERER_H

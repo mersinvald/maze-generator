@@ -4,7 +4,7 @@
 #include <types.h>
 #include <stack.h>
 
-data seekStep(data d);
+void seekStep(Data_t* d);
 
 #endif // SEEKER_H
 

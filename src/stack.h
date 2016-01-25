@@ -4,10 +4,9 @@
 #include <types.h>
 
 
-void push(cell c, stack **s, unsigned int* sizeptr);
-cell pop(stack **s, unsigned int* sizeptr);
-
-void wipe(stack **s, unsigned int* sizeptr);
+void   push(Cell_t c, Stack_t *stack);
+Cell_t pop (Stack_t *stack);
+void   wipe(Stack_t *stack);
 #endif // STACK_H
 
 

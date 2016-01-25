@@ -1,12 +1,10 @@
 #include <funcs.h>
 
-void printBitmap(mazeMatrix maze, int w, int h){
-    int i, j;
-
+void printBitmap(MazeMatrix_t maze, uint16_t w, uint16_t h){
     printf("\n");
-    for(i = 0; i < h; i++){
+    for(uint16_t i = 0; i < h; i++){
         printf("\n");
-        for(j = 0; j < w; j++){
+        for(uint16_t j = 0; j < w; j++){
                 /*if(maze[i][j] != WALL)
                     printf("\033[34m%s\033[0m ", "1" \u25A0");
                 else
@@ -17,18 +15,15 @@ void printBitmap(mazeMatrix maze, int w, int h){
     printf("\n");
 }
 
-void printVertices(vertex* array, int count){
-    int i, j;
-
+void printVertices(Vertex_t* array, uint16_t count){
     printf("\n");
-
-    for(j = 0; j < count; j++){
+    for(uint16_t i = 0; i < count; i++){
                 /*if(maze[i][j] != WALL)
                     printf("\033[34m%s\033[0m ", "1" \u25A0");
                 else
                     printf("\033[31m%s\033[0m ", "0" "\u00A0");*/
-                printf("%f %f\n", array[j].x, array[j].y);
-                if(j % 4 == 0) printf("\n");
+                printf("%f %f\n", array[i].x, array[i].y);
+                if(i % 4 == 0) printf("\n");
     }
     printf("\n");
 }

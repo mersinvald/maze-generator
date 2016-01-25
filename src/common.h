@@ -5,34 +5,25 @@
 #include <types.h>
 #include <libpng16/png.h>
 
-data initGeneratorData(int width, int height, cell startPoint);
-data initSeekerData(data d,cell startPoint, cell exitPoint);
-renderData initRenderData(data d, int windowW, int windowH);
-renderData clearSeekerColorArray(mazeMatrix maze, renderData rd);
-parms getInput(int first, int mode, parms p);
+Data_t initGeneratorData(uint16_t width, uint16_t height, Cell_t startPoint);
+
+Data_t initSeekerData(Data_t d, Cell_t startPoint, Cell_t exitPoint);
+
+RenderData_t initRenderData(Data_t d, uint16_t windowW, uint16_t windowH);
+
+RenderData_t clearSeekerColorArray(MazeMatrix_t maze, RenderData_t rd);
+
+Parms_t      getInput(bool first, Action_t mode, Parms_t p);
 
 //generator and seeker common functions
-mazeMatrix setMode      (cell c,
-                         mazeMatrix maze,
-                         int type);
+void         setMode (Cell_t cell, MazeMatrix_t maze, CellType_t type);
 
-cellString getNeighbours(unsigned int width,
-                         unsigned int height,
-                         mazeMatrix maze,
-                         cell       c,
-                         int distance);
+CellString_t getNeighbours(Data_t *data, Cell_t cell, int8_t distance);
 
-//cellString getCells     (unsigned int width,
-//                         unsigned int height,
-//                         mazeMatrix maze,
-//                         int type);
-
-unsigned int        randomRange
-                        (unsigned int low,
-                         unsigned int high);
+uint32_t     randomRange (uint32_t low, uint32_t high);
 
 //save to png
-int save_png_libpng(const char *filename, uint8_t *pixels, int w, int h);
+bool save_png_libpng(const char *filename, uint8_t *pixels, uint16_t w, uint16_t h);
 
 #endif // COMMON_H
 

@@ -1,41 +1,43 @@
+
+
 #include <stdio.h>
-#include <generator.h>
-#include <seeker.h>
-#include <renderer.h>
-#include <types.h>
-#include <funcs.h>
-#include <common.h>
-#include <stack.h>
+#include "generator.h"
+#include "seeker.h"
+#include "renderer.h"
+#include "types.h"
+#include "funcs.h"
+#include "common.h"
+#include "stack.h"
 
 
-int main(int argc, char **argv)
+int main()
 {
-    parms input;
-    /*
-    input.width = 800;
-    input.height = 450;
-    input.fullscreen = SDL_WINDOW_FULLSCREEN;
-    input.windowH = 900;
-    input.windowW = 1600;
+    Parms_t input;
+/*
+    input.width = 10;
+    input.height = 10;
+    input.fullscreen = 0;//SDL_WINDOW_FULLSCREEN;
+    input.windowH = 200;
+    input.windowW = 200;
     input.animationDelay = 0;
-    input.framesDrop = 1000;
+    input.framesDrop = 1;
     input.startPoint.x = 1;
     input.startPoint.y = 1;
-    input.exitPoint.x  = 797;
-    input.exitPoint.y  = 447;*/
+    input.exitPoint.x  = 7;
+    input.exitPoint.y  = 7;
+*/
+    Parms_t      last;
+    bool         quit = false;
+    Data_t       d;
+    RenderData_t rd;
 
-    parms last;
-    int quit = 0;
-    data d;
-    renderData rd;
-
-    srand((unsigned)clock());
+    srand(clock());
 
     //инициализация SDL2
     SDL_Init(SDL_INIT_VIDEO);
     input = getInput(1, ALL, input);
     SDL_Window   *window   = SDL_CreateWindow("Labytinth", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, input.windowW, input.windowH, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | input.fullscreen | SDL_WINDOW_BORDERLESS);
-    SDL_GLContext context  = SDL_GL_CreateContext(window);
+    SDL_GL_CreateContext(window);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -51,13 +53,12 @@ int main(int argc, char **argv)
     SDL_GL_SetSwapInterval( 1 ); //vsync
 
     uint8_t *data;
-    int flagChanged = 0;
-    int flagAction = NOTHING;
-    int flagGenerated = 0;
-    int flagGeneratorData   = 0;
-    int flagSolverData   = 0;
-    int flagSolved = 0;
-    int i = 0;
+    bool     flagChanged = 0;
+    Action_t flagAction = NOTHING;
+    bool     flagGenerated = 0;
+    bool     flagGeneratorData   = 0;
+    bool     flagSolverData   = 0;
+    uint16_t i = 0;
 
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -66,7 +67,7 @@ int main(int argc, char **argv)
     while(!quit){
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT)
-                quit = 1;
+                quit = true;
 
             else if (event.type == SDL_KEYDOWN){
                     switch (event.key.keysym.sym){
@@ -85,68 +86,67 @@ int main(int argc, char **argv)
         }
         if(flagAction == GENERATE){
             if(!flagGeneratorData){
-                d = initGeneratorData(input.width, input.height, input.startPoint);
-                rd = initRenderData(d, input.windowW, input.windowH);
-                glVertexPointer(2, GL_FLOAT, sizeof(vertex), rd.vertices);
-                glColorPointer(3, GL_UNSIGNED_BYTE, sizeof(vertexColor), rd.verticesColor);
-                flagGeneratorData = 1;
-                flagGenerated = 0;
-                flagSolved = 0;
-                flagSolverData = 0;
+                d                 = initGeneratorData(input.width, input.height, input.startPoint);
+                rd                = initRenderData(d, input.windowW, input.windowH);
+                flagGeneratorData = true;
+                flagGenerated     = false;
+                flagSolverData    = false;
+
+                glVertexPointer(2, GL_FLOAT, sizeof(Vertex_t), rd.vertices);
+                glColorPointer(3, GL_UNSIGNED_BYTE, sizeof(VertexColor_t), rd.verticesColor);
+
             }
             for(i = 0; i < input.framesDrop; i++){
                 if(d.unvisitedNum != 0){
-                    d = generateStep(d);
+                    generateStep(&d);
                 }
                 else{
-                    flagGeneratorData = 0;
-                    flagGenerated = 1;
-                    flagAction = NOTHING;
+                    flagGeneratorData = false;
+                    flagGenerated     = true;
+                    flagAction        = NOTHING;
                     break;
                 }
             }
             d.maze[d.startPoint.y][d.startPoint.x] = CURRENT;
             renderMatrix(d.maze, rd, GENERATE);
             d.maze[d.startPoint.y][d.startPoint.x] = GENVISITED;
-            flagChanged = 1;
+            flagChanged = true;
         }
         else if(flagAction == SOLVE && flagGenerated){
             if(!flagSolverData){
                 d = initSeekerData(d, input.startPoint, input.exitPoint);
                 rd = clearSeekerColorArray(d.maze, rd);
-                flagSolverData = 1;
+                flagSolverData = true;
             }
             for(i = 0; i < input.framesDrop; i++){
                 if((d.startPoint.x != d.exitPoint.x || d.startPoint.y != d.exitPoint.y) && d.error != 1){
-                    d = seekStep(d);
+                    seekStep(&d);
                 }
                 else if(d.error){
                     printf("ERROR: Lanyrinth cannot be solved! :C\n");
                 }
                 else{
-                    flagSolved = 1;
-                    flagSolverData = 0;
+                    flagSolverData = false;
                     flagAction = NOTHING;
-                    d.maze = setMode(d.exitPoint, d.maze, WAY);
+                    setMode(d.exitPoint, d.maze, WAY);
                     break;
                 }
             }
             setMode(d.startPoint, d.maze, CURRENT);
             renderMatrix(d.maze, rd, SOLVE);
             setMode(d.startPoint, d.maze, WAY);
-            flagChanged = 1;
+            flagChanged = true;
         }
         else if(flagAction == STOP){
             last = input;
             input = getInput(0, GENERATE, last);
             if((last.width != input.width) || (last.height != input.height)){
-                flagGenerated = 0;
-                flagGeneratorData = 0;
-                flagSolverData = 0;
-                flagSolved = 0;
+                flagGenerated     = false;
+                flagGeneratorData = false;
+                flagSolverData    = false;
             }
-            flagAction = NOTHING;
-            flagChanged = 1;
+            flagAction  = NOTHING;
+            flagChanged = true;
         }
         else if(flagAction == OUTPUT){
             data = malloc(input.windowW * input.windowH * 4 * sizeof(uint8_t));
@@ -158,11 +158,11 @@ int main(int argc, char **argv)
         if(flagAction != NOTHING || flagChanged){
             SDL_Delay(input.animationDelay);
             SDL_GL_SwapWindow(window);
-            flagChanged = 0;
+            flagChanged = false;
         }
     }
 
     //cleanup
-    wipe(&d.s, &d.stackSize);
+    wipe(d.stack);
     return 0;
 }
